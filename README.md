@@ -14,4 +14,4 @@ Crie seu firmware e suba o resultado para o github.
 
 O primeiro passo foi determinar a porta que seria utilizada, com base no esquemático do STM32F411 e como sugerido na atividade, a porta **A0** está conectada ao botão **KEY**, podendo ser utilizado para entrada e saída do sinal se configurado em push-pull.
 
-Conforme identificado, buscou-se o endereço base do GPIOA no manual de referência e foi adicionado ao main.
+Conforme identificado, buscou-se o endereço base do *GPIOA* no manual de referência e foi adicionado ao main. Foi configurado então os endereços do *GPIOA* a partir dos offsets.

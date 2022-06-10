@@ -29,6 +29,13 @@
 
 /* Register Addresses *******************************************************/
 #define STM32_RCC_AHB1ENR (STM32_RCC_BASE + STM32_RCC_AHB1ENR_OFFSET)
+
+#define STM32_GPIOA_MODER   (STM32_GPIOA_BASE + STM32_GPIO_MODER_OFFSET)
+#define STM32_GPIOA_OTYPER  (STM32_GPIOA_BASE + STM32_GPIO_OTYPER_OFFSET)
+#define STM32_GPIOA_PUPDR   (STM32_GPIOA_BASE + STM32_GPIO_PUPDR_OFFSET)
+#define STM32_GPIOA_ODR     (STM32_GPIOA_BASE + STM32_GPIO_ODR_OFFSET)
+#define STM32_GPIOA_BSRR    (STM32_GPIOA_BASE + STM32_GPIO_BSRR_OFFSET)
+
 #define STM32_GPIOC_MODER (STM32_GPIOC_BASE + STM32_GPIO_MODER_OFFSET)
 #define STM32_GPIOC_OTYPER (STM32_GPIOC_BASE + STM32_GPIO_OTYPER_OFFSET)
 #define STM32_GPIOC_PUPDR (STM32_GPIOC_BASE + STM32_GPIO_PUPDR_OFFSET)
@@ -45,25 +52,26 @@
 #define GPIO_MODER_ANALOG (3) // Analog mode
 
 /* GPIO port registers configs */
-#define GPIO_MODERA0_SHIFT (1) //Config later
+#define GPIO_MODERA0_SHIFT (0) // MODDER 0
+#define GPIO_MODERA0_MASK (GPIO_MODER_INPUT << GPIO_MODERA0_SHIFT)
 
-#define GPIO_MODER13_SHIFT (26)
-#define GPIO_MODER13_MASK (3 << GPIO_MODER13_SHIFT)
+#define GPIO_MODERC13_SHIFT (26)
+#define GPIO_MODERC13_MASK (3 << GPIO_MODERC13_SHIFT)
 
 /* GPIO port output type register */
 #define GPIO_OTYPER_PP (0) /* 0=Output push-pull */
 #define GPIO_OTYPER_OD (1) /* 1=Output open-drain */
 
-#define GPIO_OT13_SHIFT (13)
-#define GPIO_OT13_MASK (1 << GPIO_OT13_SHIFT)
+#define GPIO_OTC13_SHIFT (13)
+#define GPIO_OTC13_MASK (1 << GPIO_OTC13_SHIFT)
 
 /* GPIO port pull-up/pull-down register */
 #define GPIO_PUPDR_NONE (0)     /* No pull-up, pull-down */
 #define GPIO_PUPDR_PULLUP (1)   /* Pull-up */
 #define GPIO_PUPDR_PULLDOWN (2) /* Pull-down */
 
-#define GPIO_PUPDR13_SHIFT (26)
-#define GPIO_PUPDR13_MASK (3 << GPIO_PUPDR13_SHIFT)
+#define GPIO_PUPDRC13_SHIFT (26)
+#define GPIO_PUPDRC13_MASK (3 << GPIO_PUPDRC13_SHIFT)
 
 /* GPIO port bit set/reset register */
 #define GPIO_BSRR_SET(n) (1 << (n))
@@ -101,18 +109,18 @@ int main(int argc, char *argv[])
 
     // Configura PC13 como saida pull-up off e pull-down off
     reg = *pGPIOC_MODER;
-    reg &= ~(GPIO_MODER13_MASK);
-    reg |= (GPIO_MODER_OUTPUT << GPIO_MODER13_SHIFT);
+    reg &= ~(GPIO_MODERC13_MASK);
+    reg |= (GPIO_MODER_OUTPUT << GPIO_MODERC13_SHIFT);
     *pGPIOC_MODER = reg;
 
     reg = *pGPIOC_OTYPER;
-    reg &= ~(GPIO_OT13_MASK);
-    reg |= (GPIO_OTYPER_PP << GPIO_OT13_SHIFT);
+    reg &= ~(GPIO_OTC13_MASK);
+    reg |= (GPIO_OTYPER_PP << GPIO_OTC13_SHIFT);
     *pGPIOC_OTYPER = reg;
 
     reg = *pGPIOC_PUPDR;
-    reg &= ~(GPIO_PUPDR13_MASK);
-    reg |= (GPIO_PUPDR_NONE << GPIO_PUPDR13_SHIFT);
+    reg &= ~(GPIO_PUPDRC13_MASK);
+    reg |= (GPIO_PUPDR_NONE << GPIO_PUPDRC13_SHIFT);
     *pGPIOC_PUPDR = reg;
 
     while (1)
