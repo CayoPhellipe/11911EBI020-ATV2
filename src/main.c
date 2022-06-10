@@ -5,6 +5,7 @@
 #define STM32_RCC_BASE 0x40023800 /* 0x40023800-0x40023bff: Reset and Clock control RCC */
 
 /* AHB2 Base Addresses ******************************************************/
+#define STM32_GPIOA_BASE 0x40020000U /* 0x40020000U-0x400203FFU: GPIO Port A */
 #define STM32_GPIOC_BASE 0x48000800U /* 0x48000800-0x48000bff: GPIO Port C */
 
 /* Register Offsets *********************************************************/
@@ -14,6 +15,17 @@
 #define STM32_GPIO_PUPDR_OFFSET 0x000c  // GPIO port pull-up/pull-downregister
 #define STM32_GPIO_ODR_OFFSET 0x0014    // GPIO port output data register
 #define STM32_GPIO_BSRR_OFFSET 0x0018   // GPIO port bit set/reset register
+
+//      //REMEMBER//    //
+// MODER: Define como o pino vai ser usado (entrada, saída, analógico ou função alternativa).
+// OTYPER: Se saída, seleciona a topologia (push pull ou open drain).
+// OSPEEDR: Seleciona a máxima velocidade possível para o pino, quando configurado como saída.
+// PUPDR: Seleciona resistores de pull up ou pull down para o pino (tanto para saída quanto entrada).
+// IDR: Permite a leitura do valor do pino, quando o GPIO é configurado como entrada.
+// ODR: Seta o valor do pino, quando o GPIO está configurado como saída. Também pode ser lido, para se saber o valor atual da saída.
+// BSRR: Permite também a escrita de valores nos pinos de saída mas de forma atômica e individualizada.
+// LCKR: Permite travar a configuração de um determinado pino, evitando mudanças indevidas por bugs, por exemplo.
+// AFR[2]: Realiza a seleção da função alternativa para o pino.
 
 /* Register Addresses *******************************************************/
 #define STM32_RCC_AHB1ENR (STM32_RCC_BASE + STM32_RCC_AHB1ENR_OFFSET)
@@ -31,6 +43,9 @@
 #define GPIO_MODER_OUTPUT (1) // General purpose output mode
 #define GPIO_MODER_ALT (2)    // Alternate mode
 #define GPIO_MODER_ANALOG (3) // Analog mode
+
+/* GPIO port registers configs */
+#define GPIO_MODERA0_SHIFT (1) //Config later
 
 #define GPIO_MODER13_SHIFT (26)
 #define GPIO_MODER13_MASK (3 << GPIO_MODER13_SHIFT)
@@ -53,6 +68,13 @@
 /* GPIO port bit set/reset register */
 #define GPIO_BSRR_SET(n) (1 << (n))
 #define GPIO_BSRR_RST(n) (1 << (n + 16))
+
+
+// CONFIGURAÇÕES GPIOA0 INPUT MODE
+#define GPIO_INPUT
+
+//
+
 
 // LED DELAY
 #define LED_DELAY 500000
