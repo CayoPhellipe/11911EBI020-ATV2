@@ -6,7 +6,7 @@
 
 /* AHB2 Base Addresses ******************************************************/
 #define STM32_GPIOA_BASE 0x40020000U /* 0x40020000U-0x400203FFU: GPIO Port A */
-#define STM32_GPIOC_BASE 0x48000800U /* 0x48000800-0x48000bff: GPIO Port C */
+#define STM32_GPIOC_BASE 0x40020800U /* 0x40020800-0x40020BFF: GPIO Port C */
 
 /* Register Offsets *********************************************************/
 #define STM32_RCC_AHB1ENR_OFFSET 0x0030 // AHB1 Peripheral Clock enableregister
