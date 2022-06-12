@@ -13,6 +13,7 @@
 #define STM32_GPIO_MODER_OFFSET 0x0000  // GPIO port mode register
 #define STM32_GPIO_OTYPER_OFFSET 0x0004 // GPIO port output type register
 #define STM32_GPIO_PUPDR_OFFSET 0x000c  // GPIO port pull-up/pull-downregister
+#define STM32_GPIO_IDR_OFFSET 0x0010    // GPIO port input data register
 #define STM32_GPIO_ODR_OFFSET 0x0014    // GPIO port output data register
 #define STM32_GPIO_BSRR_OFFSET 0x0018   // GPIO port bit set/reset register
 
@@ -79,12 +80,6 @@
 /* GPIO port bit set/reset register */
 #define GPIO_BSRR_SET(n) (1 << (n))
 #define GPIO_BSRR_RST(n) (1 << (n + 16))
-
-
-// CONFIGURAÇÕES GPIOA0 INPUT MODE
-#define GPIO_INPUT
-
-//
 
 
 // LED DELAY
