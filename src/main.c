@@ -97,6 +97,7 @@ static const char fw_version[] = {'V', '1', '.', '0'};
 
 int main(int argc, char *argv[])
 {
+    uint32_t led_time = LED_DELAY;
     uint32_t reg;
 
     /* Ponteiros para registradores */
@@ -148,25 +149,35 @@ int main(int argc, char *argv[])
     *pGPIOA_PUPDR = reg;
 
     /* GPIOA0 register read */
-    uint32_t KEY_status = GPIO_IDRA0_MASK & *pGPIOA_IDR; //Every AHB Cycle KEY 
-    KEY_status = KEY_status == 0 ? 0 : 1;  //set to 1 or 0
+    uint32_t KEY_status = GPIO_IDRA0_MASK & *pGPIOA_IDR; //Every AHB Cycle KEY set to 0 or not
 
     while (1)
     {
-        if(KEY_status == 0) //KEY button pressed
+        if(KEY_status == 0) //KEY button pressed // Frequency (+) port input 1 
         {
-
+            led_time = LED_DELAY/1000;
+        }
+        else // KEY button released // Frequency (-) port input 0
+        {
+            led_time = LED_DELAY;
         }
 
         *pGPIOC_BSRR = GPIO_BSRR_SET(13);
         led_status = 0;
-        for (uint32_t i = 0; i < LED_DELAY; i++);
+        for (uint32_t i = 0; i < LED_DELAY; i++){
+            if(KEY_status != GPIO_IDRA0_MASK & *pGPIOA_IDR){
+                break;
+            }
+        }
         *pGPIOC_BSRR = GPIO_BSRR_RST(13);
         led_status = 1;
-        for (uint32_t i = 0; i < LED_DELAY; i++);
+        for (uint32_t i = 0; i < LED_DELAY; i++){
+            if(KEY_status != GPIO_IDRA0_MASK & *pGPIOA_IDR){
+                break;
+            }
+        }
         
         KEY_status = GPIO_IDRA0_MASK & *pGPIOA_IDR;
-        KEY_status = KEY_status == 0 ? 0 : 1;
     }
 
     return EXIT_SUCCESS;
