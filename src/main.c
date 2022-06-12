@@ -85,7 +85,7 @@
 
 /* GPIO por IDR register */
 #define GPIO_IDR0_SHIFT (0)
-#define GPIO_IDRA0_MASK (GPIO_PUPDR0_SHIFT)
+#define GPIO_IDRA0_MASK (1 << GPIO_PUPDR0_SHIFT)
 
 
 // LED DELAY
@@ -126,6 +126,14 @@ int main(int argc, char *argv[])
     reg &= ~(GPIO_PUPDRC13_MASK);
     reg |= (GPIO_PUPDR_NONE << GPIO_PUPDRC13_SHIFT);
     *pGPIOC_PUPDR = reg;
+
+    // Habilitar o clock GPIOA
+    reg = *pRCC_AHB1ENR;
+    reg |= RCC_AHB1ENR_GPIOAEN;
+    *pRCC_AHB1ENR = reg;
+
+    /* GPIOA0 register read */
+    //uint16_t push_button = GPIO_IDRA0_MASK; //Every AHB Cycle 
 
     while (1)
     {
