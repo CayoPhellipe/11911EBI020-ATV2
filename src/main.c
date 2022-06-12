@@ -55,8 +55,8 @@
 #define GPIO_MODER_ANALOG (3) // Analog mode
 
 /* GPIO port registers configs */
-#define GPIO_MODER0_SHIFT (0) // MODDER 0
-#define GPIO_MODERA0_MASK (GPIO_MODER_INPUT << GPIO_MODER0_SHIFT)
+#define GPIO_MODERA0_SHIFT (0) // MODDER 0
+#define GPIO_MODERA0_MASK (GPIO_MODER_INPUT << GPIO_MODERA0_SHIFT)
 
 #define GPIO_MODERC13_SHIFT (26)
 #define GPIO_MODERC13_MASK (3 << GPIO_MODERC13_SHIFT)
@@ -73,8 +73,8 @@
 #define GPIO_PUPDR_PULLUP (1)   /* Pull-up */
 #define GPIO_PUPDR_PULLDOWN (2) /* Pull-down */
 
-#define GPIO_PUPDR0_SHIFT (0)
-#define GPIO_PUPDRA0_MASK (GPIO_PUPDR_PULLUP << GPIO_PUPDR0_SHIFT)
+#define GPIO_PUPDRA0_SHIFT (0)
+#define GPIO_PUPDRA0_MASK (GPIO_PUPDR_PULLUP << GPIO_PUPDRA0_SHIFT)
 
 #define GPIO_PUPDRC13_SHIFT (26)
 #define GPIO_PUPDRC13_MASK (3 << GPIO_PUPDRC13_SHIFT) //Why reserved? see later this ************//
@@ -106,6 +106,9 @@ int main(int argc, char *argv[])
     uint32_t *pGPIOC_PUPDR = (uint32_t *)STM32_GPIOC_PUPDR;
     uint32_t *pGPIOC_BSRR = (uint32_t *)STM32_GPIOC_BSRR;
 
+    uint32_t *pGPIOA_MODER = (uint32_t *)STM32_GPIOA_MODER;
+    uint32_t *pGPIOA_PUPDR = (uint32_t *)STM32_GPIOA_PUPDR;
+
     // Habilitar o clock GPIOC
     reg = *pRCC_AHB1ENR;
     reg |= RCC_AHB1ENR_GPIOCEN; // reg = reg | (1 << 2)
@@ -131,6 +134,17 @@ int main(int argc, char *argv[])
     reg = *pRCC_AHB1ENR;
     reg |= RCC_AHB1ENR_GPIOAEN;
     *pRCC_AHB1ENR = reg;
+
+    // Configura PA0 como entrada Pull-up
+    reg = *pGPIOA_MODER;
+    reg &= ~(GPIO_MODERA0_MASK);
+    reg |= (GPIO_MODER_OUTPUT << GPIO_MODERA0_SHIFT);
+    *pGPIOC_MODER = reg;
+
+    reg = *pGPIOA_PUPDR;
+    reg &= ~(GPIO_PUPDRC13_MASK);
+    reg |= (GPIO_PUPDR_NONE << GPIO_PUPDRC13_SHIFT);
+    *pGPIOC_PUPDR = reg;
 
     /* GPIOA0 register read */
     //uint16_t push_button = GPIO_IDRA0_MASK; //Every AHB Cycle 
