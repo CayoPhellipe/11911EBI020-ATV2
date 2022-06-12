@@ -153,6 +153,11 @@ int main(int argc, char *argv[])
 
     while (1)
     {
+        if(KEY_status == 0) //KEY button pressed
+        {
+
+        }
+
         *pGPIOC_BSRR = GPIO_BSRR_SET(13);
         led_status = 0;
         for (uint32_t i = 0; i < LED_DELAY; i++);
