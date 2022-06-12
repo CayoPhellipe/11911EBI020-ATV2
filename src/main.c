@@ -34,6 +34,7 @@
 #define STM32_GPIOA_MODER   (STM32_GPIOA_BASE + STM32_GPIO_MODER_OFFSET)
 #define STM32_GPIOA_OTYPER  (STM32_GPIOA_BASE + STM32_GPIO_OTYPER_OFFSET)
 #define STM32_GPIOA_PUPDR   (STM32_GPIOA_BASE + STM32_GPIO_PUPDR_OFFSET)
+#define STM32_GPIOA_IDR     (STM32_GPIOA_BASE + STM32_GPIO_IDR_OFFSET)
 #define STM32_GPIOA_ODR     (STM32_GPIOA_BASE + STM32_GPIO_ODR_OFFSET)
 #define STM32_GPIOA_BSRR    (STM32_GPIOA_BASE + STM32_GPIO_BSRR_OFFSET)
 
@@ -44,6 +45,7 @@
 #define STM32_GPIOC_BSRR (STM32_GPIOC_BASE + STM32_GPIO_BSRR_OFFSET)
 
 /* AHB1 Peripheral Clock enable register */
+#define RCC_AHB1ENR_GPIOAEN (1 << 0) /* Bit 0: IO port A clock enable */
 #define RCC_AHB1ENR_GPIOCEN (1 << 2) /* Bit 2: IO port C clock enable */
 
 /* GPIO port mode register */
@@ -80,6 +82,10 @@
 /* GPIO port bit set/reset register */
 #define GPIO_BSRR_SET(n) (1 << (n))
 #define GPIO_BSRR_RST(n) (1 << (n + 16))
+
+/* GPIO por IDR register */
+#define GPIO_IDR0_SHIFT (0)
+#define GPIO_IDRA0_MASK (GPIO_PUPDR0_SHIFT)
 
 
 // LED DELAY
