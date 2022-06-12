@@ -108,6 +108,7 @@ int main(int argc, char *argv[])
 
     uint32_t *pGPIOA_MODER = (uint32_t *)STM32_GPIOA_MODER;
     uint32_t *pGPIOA_PUPDR = (uint32_t *)STM32_GPIOA_PUPDR;
+    uint32_t *pGPIOA_IDR = (uint32_t *) STM32_GPIOA_IDR;
 
     // Habilitar o clock GPIOC
     reg = *pRCC_AHB1ENR;
@@ -138,27 +139,29 @@ int main(int argc, char *argv[])
     // Configura PA0 como entrada Pull-up
     reg = *pGPIOA_MODER;
     reg &= ~(GPIO_MODERA0_MASK);
-    reg |= (GPIO_MODER_OUTPUT << GPIO_MODERA0_SHIFT);
-    *pGPIOC_MODER = reg;
+    reg |= (GPIO_MODER_INPUT << GPIO_MODERA0_SHIFT);
+    *pGPIOA_MODER = reg;
 
     reg = *pGPIOA_PUPDR;
-    reg &= ~(GPIO_PUPDRC13_MASK);
-    reg |= (GPIO_PUPDR_NONE << GPIO_PUPDRC13_SHIFT);
-    *pGPIOC_PUPDR = reg;
+    reg &= ~(GPIO_PUPDRA0_MASK);
+    reg |= (GPIO_PUPDR_PULLUP << GPIO_PUPDRA0_SHIFT);
+    *pGPIOA_PUPDR = reg;
 
     /* GPIOA0 register read */
-    //uint16_t push_button = GPIO_IDRA0_MASK; //Every AHB Cycle 
+    uint32_t KEY_status = GPIO_IDRA0_MASK & *pGPIOA_IDR; //Every AHB Cycle KEY 
+    KEY_status = KEY_status == 0 ? 0 : 1;  //set to 1 or 0
 
     while (1)
     {
         *pGPIOC_BSRR = GPIO_BSRR_SET(13);
         led_status = 0;
-        for (uint32_t i = 0; i < LED_DELAY; i++)
-            ;
+        for (uint32_t i = 0; i < LED_DELAY; i++);
         *pGPIOC_BSRR = GPIO_BSRR_RST(13);
         led_status = 1;
-        for (uint32_t i = 0; i < LED_DELAY; i++)
-            ;
+        for (uint32_t i = 0; i < LED_DELAY; i++);
+        
+        KEY_status = GPIO_IDRA0_MASK & *pGPIOA_IDR;
+        KEY_status = KEY_status == 0 ? 0 : 1;
     }
 
     return EXIT_SUCCESS;
