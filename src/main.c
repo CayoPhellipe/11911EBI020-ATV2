@@ -153,25 +153,25 @@ int main(int argc, char *argv[])
 
     while (1)
     {
-        if(KEY_status == 0) //KEY button pressed // Frequency (+) port input 1 
-        {
-            led_time = LED_DELAY/1000;
-        }
-        else // KEY button released // Frequency (-) port input 0
+        if(KEY_status == 0) //KEY button pressed // Frequency (-) port input 0 
         {
             led_time = LED_DELAY;
+        }
+        else // KEY button released // Frequency (+) port input 1
+        {
+            led_time = LED_DELAY/1000;
         }
 
         *pGPIOC_BSRR = GPIO_BSRR_SET(13);
         led_status = 0;
-        for (uint32_t i = 0; i < LED_DELAY; i++){
+        for (uint32_t i = 0; i < led_time; i++){
             if(KEY_status != GPIO_IDRA0_MASK & *pGPIOA_IDR){
                 break;
             }
         }
         *pGPIOC_BSRR = GPIO_BSRR_RST(13);
         led_status = 1;
-        for (uint32_t i = 0; i < LED_DELAY; i++){
+        for (uint32_t i = 0; i < led_time; i++){
             if(KEY_status != GPIO_IDRA0_MASK & *pGPIOA_IDR){
                 break;
             }
