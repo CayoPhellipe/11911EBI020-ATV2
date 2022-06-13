@@ -102,7 +102,6 @@ uint32_t vectors[] __attribute__((section(".isr_vectors"))) = {
     0,                                       // 0x0000 0034
     (uint32_t)pendsv_handler,                // 0x0000 0038
     (uint32_t)systick_handler,               // 0x0000 003c
-    (uint32_t)systick_handler,               // 0x0000 003c
     (uint32_t)wwdg_irqhandler,               // 0x0000 0040
     (uint32_t)pvd_irqhandler,                // 0x0000 0044
     (uint32_t)tamp_stamp_irqhandler,         // 0x0000 0048
@@ -155,10 +154,10 @@ uint32_t vectors[] __attribute__((section(".isr_vectors"))) = {
     (uint32_t)sdio_irqhandler,               // 0x0000 0104
     (uint32_t)tim5_irqhandler,               // 0x0000 0108
     (uint32_t)spi3_irqhandler,               // 0x0000 010C
-    0,
-    0,
-    0,
-    0,
+    0,                                 // 0x0000 0110
+    0,                                 // 0x0000 0114
+    0,                                 // 0x0000 0118
+    0,                                 // 0x0000 011C
     (uint32_t)dma2_stream0_irqhandler, // 0x0000 0120
     (uint32_t)dma2_stream1_irqhandler, // 0x0000 0124
     (uint32_t)dma2_stream2_irqhandler, // 0x0000 0128
@@ -188,7 +187,6 @@ uint32_t vectors[] __attribute__((section(".isr_vectors"))) = {
     0,                                 // 0x0000 0188
     0,                                 // 0x0000 018C
     (uint32_t)spi4_irqhandler,         // 0x0000 0190
-    (uint32_t)spi5_irqhandler,         // 0x0000 0194
 };
 
 void reset_handler()
