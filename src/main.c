@@ -89,10 +89,10 @@
 
 
 // LED DELAY
-#define LED_DELAY 500000
+#define LED_DELAY 90000
 
 // .bss & .data tests
-static uint32_t led_status;
+static uint32_t led_status, KEY_status;
 
 int main(int argc, char *argv[])
 {
@@ -147,36 +147,30 @@ int main(int argc, char *argv[])
     reg |= (GPIO_PUPDR_PULLUP << GPIO_PUPDRA0_SHIFT);
     *pGPIOA_PUPDR = reg;
 
-    /* GPIOA0 register read */
-    uint32_t KEY_status = GPIO_IDRA0_MASK & *pGPIOA_IDR; //Every AHB Cycle KEY set to 0 or not
 
     while (1)
     {
+        /* GPIOA0 register read */
+        KEY_status = (GPIO_IDRA0_MASK & *pGPIOA_IDR); //Every AHB Cycle KEY set to 0 or not
         if(KEY_status == 0) //KEY button pressed // Frequency (-) port input 0 
         {
             led_time = LED_DELAY;
         }
         else // KEY button released // Frequency (+) port input 1
         {
-            led_time = LED_DELAY/1000;
+            led_time = LED_DELAY/2;
         }
 
         *pGPIOC_BSRR = GPIO_BSRR_SET(13);
         led_status = 0;
-        for (uint32_t i = 0; i < led_time; i++){
-            if(KEY_status != (GPIO_IDRA0_MASK & *pGPIOA_IDR)){
-                break;
-            }
-        }
+        for (uint32_t i = 0; i < led_time; i++)
+            if(KEY_status != (GPIO_IDRA0_MASK & *pGPIOA_IDR)) break;
+
         *pGPIOC_BSRR = GPIO_BSRR_RST(13);
         led_status = 1;
-        for (uint32_t i = 0; i < led_time; i++){
-            if(KEY_status != (GPIO_IDRA0_MASK & *pGPIOA_IDR)){
-                break;
-            }
-        }
+        for (uint32_t i = 0; i < led_time; i++)
+            if(KEY_status != (GPIO_IDRA0_MASK & *pGPIOA_IDR)) break;
         
-        KEY_status = GPIO_IDRA0_MASK & *pGPIOA_IDR;
     }
 
     return EXIT_SUCCESS;
