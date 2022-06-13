@@ -85,7 +85,7 @@
 
 /* GPIO por IDR register */
 #define GPIO_IDR0_SHIFT (0)
-#define GPIO_IDRA0_MASK (1 << GPIO_PUPDR0_SHIFT)
+#define GPIO_IDRA0_MASK (1 << GPIO_IDR0_SHIFT)
 
 
 // LED DELAY
@@ -93,7 +93,6 @@
 
 // .bss & .data tests
 static uint32_t led_status;
-static const char fw_version[] = {'V', '1', '.', '0'};
 
 int main(int argc, char *argv[])
 {
@@ -165,14 +164,14 @@ int main(int argc, char *argv[])
         *pGPIOC_BSRR = GPIO_BSRR_SET(13);
         led_status = 0;
         for (uint32_t i = 0; i < led_time; i++){
-            if(KEY_status != GPIO_IDRA0_MASK & *pGPIOA_IDR){
+            if(KEY_status != (GPIO_IDRA0_MASK & *pGPIOA_IDR)){
                 break;
             }
         }
         *pGPIOC_BSRR = GPIO_BSRR_RST(13);
         led_status = 1;
         for (uint32_t i = 0; i < led_time; i++){
-            if(KEY_status != GPIO_IDRA0_MASK & *pGPIOA_IDR){
+            if(KEY_status != (GPIO_IDRA0_MASK & *pGPIOA_IDR)){
                 break;
             }
         }
